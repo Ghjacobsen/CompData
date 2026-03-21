@@ -1,0 +1,4 @@
+APPROACH_NAME = "tree_ensembles"
+OUTER_SPLITS = 10
+INNER_SPLITS = 5
+DEFAULT_N_JOBS = -1

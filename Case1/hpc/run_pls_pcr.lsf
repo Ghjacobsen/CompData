@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#BSUB -J case1_pls
+#BSUB -q normal
+#BSUB -W 04:00
+#BSUB -n 8
+#BSUB -R "rusage[mem=4000]"
+#BSUB -oo Case1/results/logs/case1_pls.%J.out
+#BSUB -eo Case1/results/logs/case1_pls.%J.err
+
+set -euo pipefail
+mkdir -p Case1/results/logs
+
+bash Case1/hpc/run_family.sh pls_pcr 42 10 5

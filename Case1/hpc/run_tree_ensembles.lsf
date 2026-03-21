@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#BSUB -J case1_tree
+#BSUB -q normal
+#BSUB -W 06:00
+#BSUB -n 8
+#BSUB -R "rusage[mem=4000]"
+#BSUB -oo Case1/results/logs/case1_tree.%J.out
+#BSUB -eo Case1/results/logs/case1_tree.%J.err
+
+set -euo pipefail
+mkdir -p Case1/results/logs
+
+bash Case1/hpc/run_family.sh tree_ensembles 42 10 5

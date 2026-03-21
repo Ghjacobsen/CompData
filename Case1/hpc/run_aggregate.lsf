@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#BSUB -J case1_agg
+#BSUB -q normal
+#BSUB -W 00:30
+#BSUB -n 1
+#BSUB -R "rusage[mem=2000]"
+#BSUB -oo Case1/results/logs/case1_agg.%J.out
+#BSUB -eo Case1/results/logs/case1_agg.%J.err
+
+set -euo pipefail
+mkdir -p Case1/results/logs
+
+source Case1/hpc/common_env.sh
+python -m case1_comp.orchestrator.aggregate_results \
+  --runs-root Case1/results/runs \
+  --output-dir Case1/results \
+  --student-no "${STUDENT_NO:-YourStudentNo}" \
+  --rmse-margin "${RMSE_MARGIN:-0.2}"
