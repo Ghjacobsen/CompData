@@ -1,0 +1,6 @@
+{
+  "approach": "tree_ensembles",
+  "mean_outer_rmse": 60.26036909975626,
+  "std_outer_rmse": 15.823574423962702,
+  "created_utc": "2026-03-21T15:41:47.510409+00:00"
+}

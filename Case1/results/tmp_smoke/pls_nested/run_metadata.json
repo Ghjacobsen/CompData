@@ -1,0 +1,8 @@
+{
+  "approach": "pls_pcr",
+  "seed": 42,
+  "outer_splits": 2,
+  "inner_splits": 2,
+  "n_jobs": 1,
+  "created_utc": "2026-03-21T15:42:10.779288+00:00"
+}

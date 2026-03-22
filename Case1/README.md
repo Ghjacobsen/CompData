@@ -28,7 +28,7 @@ From repository root:
 
 ```bash
 python -m pip install -e .
-set PYTHONPATH=Case1/src
+export PYTHONPATH=Case1/src
 python -m case1_comp.orchestrator.run_all --student-no 123456
 ```
 

@@ -1,0 +1,3 @@
+fold,outer_rmse,chosen_params
+1,53.80378353096706,"{'reg__alpha': 35.11191734215127, 'reg__model': 'pcr', 'reg__n_components': 15}"
+2,54.43018261788562,"{'reg__alpha': 100.0, 'reg__model': 'pls', 'reg__n_components': 5}"

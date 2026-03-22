@@ -1,0 +1,73 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28073717: <case1_agg> in cluster <dcc> Done
+
+Job <case1_agg> was submitted from host <hpclogin1> by user <s214374> in cluster <dcc> at Sat Mar 21 16:43:20 2026
+Job was executed on host(s) <n-62-31-21>, in queue <hpc>, as user <s214374> in cluster <dcc> at Sat Mar 21 17:07:42 2026
+</zhome/02/6/167678> was used as the home directory.
+</work3/s214374/CompData> was used as the working directory.
+Started at Sat Mar 21 17:07:42 2026
+Terminated at Sat Mar 21 17:07:47 2026
+Results reported at Sat Mar 21 17:07:47 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/usr/bin/env bash
+#BSUB -J case1_agg
+#BSUB -q hpc
+#BSUB -W 00:30
+#BSUB -n 1
+#BSUB -R "rusage[mem=2000]"
+#BSUB -oo Case1/results/logs/case1_agg.%J.out
+#BSUB -eo Case1/results/logs/case1_agg.%J.err
+
+set -euo pipefail
+
+if [[ -z "${COMPDATA_ROOT:-}" ]]; then
+  if [[ -n "${LSB_SUBCWD:-}" && -d "${LSB_SUBCWD}/Case1" ]]; then
+    COMPDATA_ROOT="${LSB_SUBCWD}"
+  else
+    echo "ERROR: COMPDATA_ROOT is not set and LSB_SUBCWD does not look like CompData root." >&2
+    exit 1
+  fi
+fi
+
+export COMPDATA_ROOT
+cd "${COMPDATA_ROOT}"
+mkdir -p "${COMPDATA_ROOT}/Case1/results/logs"
+
+source "${COMPDATA_ROOT}/Case1/hpc/common_env.sh"
+python -m case1_comp.orchestrator.aggregate_results \
+  --runs-root Case1/results/runs \
+  --output-dir Case1/results \
+  --student-no "${STUDENT_NO:-YourStudentNo}" \
+  --rmse-margin "${RMSE_MARGIN:-0.2}"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3.28 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   5 sec.
+    Turnaround time :                            1467 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <Case1/results/logs/case1_agg.28073717.err> for stderr output of this job.
+

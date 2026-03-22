@@ -6,6 +6,7 @@ from sklearn.cross_decomposition import PLSRegression
 from sklearn.decomposition import PCA
 from sklearn.linear_model import Ridge
 from sklearn.pipeline import Pipeline
+from sklearn.utils.validation import check_is_fitted
 
 from case1_comp.common.preprocessing import build_preprocessor
 
@@ -28,21 +29,23 @@ class PLSorPCRRegressor(BaseEstimator, RegressorMixin):
         n_comp = min(int(self.n_components), max_components)
 
         if self.model == "pls":
-            self._model = PLSRegression(n_components=n_comp)
-            self._model.fit(X, y)
+            self.model_ = PLSRegression(n_components=n_comp)
+            self.model_.fit(X, y)
         else:
-            self._pca = PCA(n_components=n_comp, random_state=self.random_state)
-            Z = self._pca.fit_transform(X)
-            self._model = Ridge(alpha=self.alpha, random_state=self.random_state)
-            self._model.fit(Z, y)
+            self.pca_ = PCA(n_components=n_comp, random_state=self.random_state)
+            Z = self.pca_.fit_transform(X)
+            self.model_ = Ridge(alpha=self.alpha, random_state=self.random_state)
+            self.model_.fit(Z, y)
         return self
 
     def predict(self, X):
+        check_is_fitted(self, attributes=["model_"])
         if self.model == "pls":
-            yhat = self._model.predict(X)
+            yhat = self.model_.predict(X)
             return np.asarray(yhat).reshape(-1)
-        Z = self._pca.transform(X)
-        return self._model.predict(Z)
+        check_is_fitted(self, attributes=["pca_"])
+        Z = self.pca_.transform(X)
+        return self.model_.predict(Z)
 
 
 def build_estimator(numeric_cols: list[str], categorical_cols: list[str], seed: int):

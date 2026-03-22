@@ -1,0 +1,3 @@
+fold,outer_rmse,chosen_params
+1,34.72842932219896,"{'reg__alpha': 7.196856730011514, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"
+2,37.582601725153786,"{'reg__alpha': 0.013894954943731374, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"

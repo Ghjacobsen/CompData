@@ -1,0 +1,11 @@
+fold,outer_rmse,chosen_params
+1,45.78345513943443,"{'reg__max_depth': 8, 'reg__max_features': 0.8, 'reg__min_samples_leaf': 5, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+2,55.93229160070734,"{'reg__max_depth': 8, 'reg__max_features': 0.8, 'reg__min_samples_leaf': 5, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+3,44.58057717798008,"{'reg__max_depth': 8, 'reg__max_features': 0.8, 'reg__min_samples_leaf': 10, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+4,49.42400981664214,"{'reg__max_depth': 8, 'reg__max_features': 0.5, 'reg__min_samples_leaf': 5, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+5,25.032220291733033,"{'reg__max_depth': 8, 'reg__max_features': 0.8, 'reg__min_samples_leaf': 3, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+6,31.873097235387803,"{'reg__max_depth': 8, 'reg__max_features': 0.8, 'reg__min_samples_leaf': 5, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+7,61.654746276209124,"{'reg__max_depth': 8, 'reg__max_features': 0.8, 'reg__min_samples_leaf': 10, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+8,63.70781714030831,"{'reg__max_depth': 8, 'reg__max_features': 0.8, 'reg__min_samples_leaf': 10, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+9,47.846908778691926,"{'reg__max_depth': 8, 'reg__max_features': 0.5, 'reg__min_samples_leaf': 5, 'reg__model': 'rf', 'reg__n_estimators': 200}"
+10,58.663613578429825,"{'reg__max_depth': 8, 'reg__max_features': 0.5, 'reg__min_samples_leaf': 5, 'reg__model': 'rf', 'reg__n_estimators': 200}"

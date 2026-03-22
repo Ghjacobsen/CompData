@@ -1,0 +1,11 @@
+fold,outer_rmse,chosen_params
+1,36.210067677827666,"{'reg__alpha': 2.682695795279722, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"
+2,43.60463172114557,"{'reg__alpha': 2.682695795279722, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"
+3,25.21292179630563,"{'reg__alpha': 5.1794746792312125, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"
+4,40.02322518666011,"{'reg__alpha': 10.0, 'reg__l1_ratio': 0.1, 'reg__model': 'ridge'}"
+5,25.961673732608464,"{'reg__alpha': 7.196856730011514, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"
+6,34.38991955930126,"{'reg__alpha': 10.0, 'reg__l1_ratio': 0.1, 'reg__model': 'ridge'}"
+7,44.308530348011885,"{'reg__alpha': 7.196856730011514, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"
+8,29.2040806005751,"{'reg__alpha': 10.0, 'reg__l1_ratio': 0.1, 'reg__model': 'ridge'}"
+9,37.281024526122636,"{'reg__alpha': 5.1794746792312125, 'reg__l1_ratio': 0.99, 'reg__model': 'elasticnet'}"
+10,41.90452824053176,"{'reg__alpha': 5.1794746792312125, 'reg__l1_ratio': 0.1, 'reg__model': 'lasso'}"

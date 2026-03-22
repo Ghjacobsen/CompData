@@ -1,0 +1,69 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28073714: <case1_en> in cluster <dcc> Done
+
+Job <case1_en> was submitted from host <hpclogin1> by user <s214374> in cluster <dcc> at Sat Mar 21 16:43:19 2026
+Job was executed on host(s) <8*n-62-31-13>, in queue <hpc>, as user <s214374> in cluster <dcc> at Sat Mar 21 16:43:19 2026
+</zhome/02/6/167678> was used as the home directory.
+</work3/s214374/CompData> was used as the working directory.
+Started at Sat Mar 21 16:43:19 2026
+Terminated at Sat Mar 21 16:47:48 2026
+Results reported at Sat Mar 21 16:47:48 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/usr/bin/env bash
+#BSUB -J case1_en
+#BSUB -q hpc
+#BSUB -W 04:00
+#BSUB -n 8
+#BSUB -R "rusage[mem=4000]"
+#BSUB -R "span[hosts=1]"
+#BSUB -oo Case1/results/logs/case1_en.%J.out
+#BSUB -eo Case1/results/logs/case1_en.%J.err
+
+set -euo pipefail
+
+if [[ -z "${COMPDATA_ROOT:-}" ]]; then
+	if [[ -n "${LSB_SUBCWD:-}" && -d "${LSB_SUBCWD}/Case1" ]]; then
+		COMPDATA_ROOT="${LSB_SUBCWD}"
+	else
+		echo "ERROR: COMPDATA_ROOT is not set and LSB_SUBCWD does not look like CompData root." >&2
+		exit 1
+	fi
+fi
+
+export COMPDATA_ROOT
+cd "${COMPDATA_ROOT}"
+mkdir -p "${COMPDATA_ROOT}/Case1/results/logs"
+
+bash "${COMPDATA_ROOT}/Case1/hpc/run_family.sh" elastic_net 42 10 5
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2008.00 sec.
+    Max Memory :                                 926 MB
+    Average Memory :                             693.25 MB
+    Total Requested Memory :                     32000.00 MB
+    Delta Memory :                               31074.00 MB
+    Max Swap :                                   -
+    Max Processes :                              15
+    Max Threads :                                18
+    Run time :                                   269 sec.
+    Turnaround time :                            269 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <Case1/results/logs/case1_en.28073714.err> for stderr output of this job.
+

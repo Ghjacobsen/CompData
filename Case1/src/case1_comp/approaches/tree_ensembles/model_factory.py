@@ -3,6 +3,7 @@ from __future__ import annotations
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
 from sklearn.pipeline import Pipeline
+from sklearn.utils.validation import check_is_fitted
 
 from case1_comp.common.preprocessing import build_preprocessor
 
@@ -38,12 +39,13 @@ class TreeSwitchRegressor(BaseEstimator, RegressorMixin):
         return RandomForestRegressor(**common)
 
     def fit(self, X, y):
-        self._model = self._build_model()
-        self._model.fit(X, y)
+        self.model_ = self._build_model()
+        self.model_.fit(X, y)
         return self
 
     def predict(self, X):
-        return self._model.predict(X)
+        check_is_fitted(self, attributes=["model_"])
+        return self.model_.predict(X)
 
 
 def build_estimator(numeric_cols: list[str], categorical_cols: list[str], seed: int):

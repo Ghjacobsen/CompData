@@ -1,0 +1,5 @@
+{
+  "reg__alpha": 5.1794746792312125,
+  "reg__l1_ratio": 0.1,
+  "reg__model": "ridge"
+}

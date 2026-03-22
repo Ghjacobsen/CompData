@@ -1,0 +1,6 @@
+{
+  "winner": "elastic_net",
+  "mean_outer_rmse": 35.810060338909004,
+  "std_outer_rmse": 7.032797817317284,
+  "rmse_estimate": 37.21661990237246
+}

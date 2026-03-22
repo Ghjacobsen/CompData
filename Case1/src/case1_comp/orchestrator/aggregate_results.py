@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -27,10 +28,24 @@ def main() -> None:
     args = parse_args()
     ensure_dir(args.output_dir)
 
-    approach_dirs = [p for p in args.runs_root.iterdir() if p.is_dir()]
+    if not args.runs_root.exists() or not args.runs_root.is_dir():
+        print(f"ERROR: runs root does not exist or is not a directory: {args.runs_root}", file=sys.stderr)
+        raise SystemExit(1)
+
+    approach_dirs = sorted([p for p in args.runs_root.iterdir() if p.is_dir()])
+    if not approach_dirs:
+        print(f"ERROR: no approach run directories found under: {args.runs_root}", file=sys.stderr)
+        raise SystemExit(1)
+
     rows = []
+    missing_summaries: list[Path] = []
     for approach_dir in approach_dirs:
-        nested_summary = load_summary(approach_dir / "nested" / "summary.json")
+        summary_path = approach_dir / "nested" / "summary.json"
+        if not summary_path.exists():
+            missing_summaries.append(summary_path)
+            continue
+
+        nested_summary = load_summary(summary_path)
         rows.append(
             {
                 "approach": nested_summary["approach"],
@@ -39,11 +54,25 @@ def main() -> None:
             }
         )
 
+    if missing_summaries:
+        print("ERROR: missing nested summary artifacts:", file=sys.stderr)
+        for path in missing_summaries:
+            print(f" - {path}", file=sys.stderr)
+        raise SystemExit(1)
+
+    if not rows:
+        print("ERROR: no valid summary rows available for aggregation.", file=sys.stderr)
+        raise SystemExit(1)
+
     leaderboard = pd.DataFrame(rows).sort_values(["mean_outer_rmse", "std_outer_rmse"])
     winner = leaderboard.iloc[0]
     winner_name = winner["approach"]
 
     pred_src = args.runs_root / winner_name / "refit" / "predictions.csv"
+    if not pred_src.exists():
+        print(f"ERROR: winner predictions file not found: {pred_src}", file=sys.stderr)
+        raise SystemExit(1)
+
     pred_dst = args.output_dir / f"sample_predictions_{args.student_no}.csv"
     pd.read_csv(pred_src).to_csv(pred_dst, index=False)
 

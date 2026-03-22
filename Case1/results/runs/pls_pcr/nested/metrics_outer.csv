@@ -1,0 +1,11 @@
+fold,outer_rmse,chosen_params
+1,47.67043647822033,"{'reg__alpha': 12.32846739442066, 'reg__model': 'pcr', 'reg__n_components': 40}"
+2,42.18759380230529,"{'reg__alpha': 12.32846739442066, 'reg__model': 'pcr', 'reg__n_components': 40}"
+3,16.263024886510717,"{'reg__alpha': 4.328761281083057, 'reg__model': 'pcr', 'reg__n_components': 40}"
+4,43.85237181351439,"{'reg__alpha': 100.0, 'reg__model': 'pls', 'reg__n_components': 5}"
+5,26.888614134631162,"{'reg__alpha': 12.32846739442066, 'reg__model': 'pcr', 'reg__n_components': 40}"
+6,35.55162641828666,"{'reg__alpha': 4.328761281083057, 'reg__model': 'pcr', 'reg__n_components': 50}"
+7,46.59956192395865,"{'reg__alpha': 12.32846739442066, 'reg__model': 'pcr', 'reg__n_components': 60}"
+8,35.83956443788534,"{'reg__alpha': 12.32846739442066, 'reg__model': 'pcr', 'reg__n_components': 50}"
+9,36.96001425980016,"{'reg__alpha': 12.32846739442066, 'reg__model': 'pcr', 'reg__n_components': 40}"
+10,40.814743873581385,"{'reg__alpha': 12.32846739442066, 'reg__model': 'pcr', 'reg__n_components': 40}"

@@ -1,0 +1,7 @@
+{
+  "approach": "tree_ensembles",
+  "seed": 42,
+  "inner_splits": 5,
+  "n_candidates": 288,
+  "created_utc": "2026-03-21T16:07:41.711395+00:00"
+}

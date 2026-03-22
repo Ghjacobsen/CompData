@@ -1,0 +1,6 @@
+{
+  "approach": "elastic_net",
+  "mean_outer_rmse": 36.15551552367637,
+  "std_outer_rmse": 2.0182046608048587,
+  "created_utc": "2026-03-21T15:32:37.442293+00:00"
+}

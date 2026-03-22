@@ -1,0 +1,8 @@
+{
+  "approach": "elastic_net",
+  "seed": 42,
+  "outer_splits": 2,
+  "inner_splits": 2,
+  "n_jobs": 1,
+  "created_utc": "2026-03-21T15:32:37.443783+00:00"
+}
