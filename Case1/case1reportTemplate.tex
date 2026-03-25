@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{newtxtext, newtxmath}
+\usepackage{hyperref}
+
+\title{Case 1}
+\author{02582 Computational Data Analysis \\ \\ s214374}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Introduction/Data description}
+
+The task is a supervised regression problem. We are given a training set of 100 observations, each described by 100 predictor variables and a continuous response~$y$. Of the 100 predictors, 95 are numeric (labelled \texttt{x\_01} through \texttt{x\_95}) and five are categorical (labelled \texttt{C\_01} through \texttt{C\_05}). A separate file contains 1000 unlabelled observations with the same predictor structure, for which predictions of~$y$ must be submitted together with a self-estimated RMSE.
+
+The defining characteristic of this dataset is that the number of predictors equals the number of observations, placing us in a regime where ordinary least squares is not viable and regularisation or dimensionality reduction is essential to avoid overfitting. No missing values were detected in either the training or prediction file.
+
+\section*{Model and method}
+
+To avoid committing to a single modelling assumption, we compared three fundamentally different regression families under an identical evaluation protocol.
+
+The first family is the elastic net family, which encompasses ridge regression, the lasso, and the elastic net as special cases controlled by a mixing parameter~$\ell_1$-ratio and a regularisation strength~$\alpha$. These models assume a linear relationship between predictors and response and address the high-dimensional setting through coefficient shrinkage. Ridge regression penalises the $\ell_2$-norm of the coefficients, retaining all predictors but dampening their influence, while the lasso uses an $\ell_1$-penalty that can drive coefficients to exactly zero, and the elastic net interpolates between the two.
+
+The second family consists of principal component regression (PCR) and partial least squares (PLS). Both project the original predictors onto a lower-dimensional latent space before fitting a regression. PCR selects components that maximise predictor variance, whereas PLS selects components that maximise covariance with the response. A ridge penalty on the regression step provides additional regularisation. This family tests whether the predictive signal resides in a low-rank subspace of the feature matrix.
+
+The third family comprises random forests and extra trees. These ensemble methods partition the feature space through recursive splitting and average many decorrelated trees. They impose no linearity assumption and can capture interactions and nonlinearities without explicit feature engineering. Including this family ensures we do not overlook strongly nonlinear structure in the data.
+
+All three families share the same preprocessing pipeline. Numeric predictors pass through a median imputer followed by standard scaling for the linear and latent families (scaling is omitted for the tree family, as trees are invariant to monotone transformations). Categorical predictors pass through a most-frequent imputer and are then one-hot encoded.
+
+\subsection*{Model selection}
+
+Model selection was performed via nested cross-validation with 10 outer folds and 5 inner folds, using a fixed random seed of~42. For each outer fold, the inner loop conducts a grid search over the hyperparameters of the given family, scoring candidates by negative RMSE. The best inner candidate is identified not as the single lowest mean error, but through the one-standard-error (1-SE) rule.
+
+The 1-SE rule works as follows. Let $s^*$ denote the best mean inner-CV score and $\sigma^*$ its standard deviation across inner folds. A threshold is computed as
+\[
+  t = s^* - \frac{\sigma^*}{\sqrt{K}},
+\]
+where $K$ is the number of inner folds. All candidates whose mean score falls above this threshold are considered statistically indistinguishable from the best. Among these, the simplest candidate is selected according to a family-specific complexity ordering. For the elastic net family, simplicity favours stronger regularisation (higher~$\alpha$) and the ridge penalty over the lasso. For PCR/PLS, fewer latent components are preferred. For tree ensembles, fewer trees, shallower depth, and larger leaf sizes are preferred.
+
+This procedure ensures that each outer fold selects a potentially different hyperparameter configuration, and the resulting outer-fold RMSE values provide an honest, nearly unbiased estimate of generalisation error.
+
+After the nested evaluation, a final model is produced by repeating the 1-SE grid search on the full training set and refitting the chosen configuration, which is then used to generate predictions for the unlabelled data.
+
+\subsection*{Missing values}
+
+The preprocessing pipeline includes a median imputer for numeric features and a most-frequent imputer for categorical features, both applied before any model fitting. In this particular dataset no missing values were observed, so the imputers act as identity transformations. The strategy was nevertheless included to ensure the pipeline generalises to data with incomplete observations.
+
+\subsection*{Factor handling}
+
+The five categorical predictors are encoded via one-hot encoding with unknown-category handling, so that categories unseen during training do not cause errors at prediction time. The resulting binary columns enter the model alongside the numeric features. For the linear and latent families, all features including the one-hot columns are standardised; for the tree family, no scaling is applied.
+
+\section*{Model validation}
+
+The nested cross-validation protocol described above yields 10 outer-fold RMSE values per family. These values summarise generalisation performance without any optimistic bias from hyperparameter tuning, since each outer test fold is strictly held out from the inner tuning loop.
+
+From the distribution of outer-fold RMSE values we compute a mean~$\mu$ and standard deviation~$\sigma$. The winner is the family with the lowest mean outer RMSE; in the event of a tie, the lower standard deviation is preferred. The final self-estimated RMSE submitted for evaluation is computed conservatively as
+\[
+  \widehat{\text{RMSE}} = \mu_{\text{outer}} + 0.2 \cdot \sigma_{\text{outer}},
+\]
+which adjusts the point estimate upward to account for the uncertainty observed across folds.
+
+\section*{Results}
+
+Table~\ref{tab:leaderboard} summarises the nested cross-validation results for all three families.
+
+\begin{table}[h]
+\centering
+\caption{Nested CV results ranked by mean outer RMSE.}
+\label{tab:leaderboard}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+Rank & Family & Mean RMSE & Std RMSE \\
+\midrule
+1 & Elastic net (ridge) & 35.81 & 7.03 \\
+2 & PCR / PLS           & 37.26 & 9.60 \\
+3 & Tree ensembles (RF) & 48.45 & 12.53 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The elastic net family achieved both the lowest mean and the lowest standard deviation, indicating the best and most stable generalisation. The final model selected by the 1-SE rule on the full training set is a ridge regression with $\alpha = 5.18$. That the procedure landed on a pure ridge solution rather than a sparse lasso or elastic net suggests that many predictors carry weak but collectively useful signal, and that coefficient shrinkage without variable elimination is the most effective strategy at this sample size. This is consistent with the high-dimensional setting where $p \approx n$ and collinearity among numeric predictors makes hard feature selection unreliable.
+
+The PCR/PLS family ranked second and was reasonably competitive. Its final configuration selected PCR with 60 latent components, which retains the majority of the original variance. The fact that aggressive dimensionality reduction did not help further supports the interpretation that the signal is distributed broadly across predictors rather than concentrated in a few leading components.
+
+The tree ensemble family performed substantially worse, with a mean RMSE roughly 35\% higher than the elastic net winner and considerably larger fold-to-fold variability. This indicates that the underlying relationship is predominantly linear and additive; with only 100 training observations, the trees lack sufficient data to learn stable nonlinear splits.
+
+Based on the winning model, our submitted RMSE estimate is
+\[
+  \widehat{\text{RMSE}} = 35.81 + 0.2 \times 7.03 = 37.22.
+\]
+
+\end{document}

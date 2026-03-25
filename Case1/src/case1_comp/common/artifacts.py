@@ -28,9 +28,8 @@ def now_utc_iso() -> str:
 
 def write_submission_predictions(predictions, path: Path) -> None:
     values = [float(v) for v in predictions]
-    rows = [{f"prediction{i + 1}": values[i]} for i in range(len(values))]
-    pd.DataFrame(rows).to_csv(path, index=False)
+    pd.DataFrame(values).to_csv(path, index=False, header=False)
 
 
 def write_submission_rmse_estimate(estimate: float, path: Path) -> None:
-    pd.DataFrame([{"myRMSEestimate": float(estimate)}]).to_csv(path, index=False)
+    pd.DataFrame([float(estimate)]).to_csv(path, index=False, header=False)
